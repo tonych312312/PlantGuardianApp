@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import NavItem from "./NavItem";
+import NavItem from './src/components/NavItem';
 
 const navigationItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9d16231fd234168a8ca0fc769cd7aa34015cfb7b0558ba85aff47715879ba53f?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Sensors" },
@@ -10,7 +10,7 @@ const navigationItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e4829a149d472fb792d4c163cbeeb33a2eb50a15708d034ab00316cfc2b0c7d8?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Settings" }
 ];
 
-function CameraPage() {
+const CameraPage = () => {
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {
@@ -19,66 +19,52 @@ function CameraPage() {
 
   return (
     <PageWrapper>
-      <HeaderText>Camera Page</HeaderText>
+      <Header>Camera Page</Header>
       <MainContent>
-        <LightingToggle onPress={toggleLight}>
-          <Text>{isLightOn ? "Turn off lighting" : "Turn on lighting"}</Text>
+        <LightingToggle onPress={toggleLight} activeOpacity={0.7}>
+          <ToggleText>{isLightOn ? "Turn off lighting" : "Turn on lighting"}</ToggleText>
         </LightingToggle>
       </MainContent>
-      <NavigationBar>
-        {navigationItems.map((item, index) => (
-          <NavItem key={index} icon={item.icon} label={item.label} />
-        ))}
-      </NavigationBar>
+      <NavigationBar />
     </PageWrapper>
   );
-}
+};
 
 const PageWrapper = styled.View`
-  background-color: #fff;
   flex: 1;
-  max-width: 360px;
-  flex-direction: column;
-  overflow: hidden;
-  color: #000;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
 `;
 
-const HeaderText = styled.Text`
-  align-self: stretch;
-  width: 100%;
-  background-color: #aff397;
-  min-height: 100px;
-  text-align: center;
-  padding: 37px;
+const Header = styled.Text`
   font-size: 24px;
   font-weight: bold;
+  background-color: #aff397;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
 `;
 
 const MainContent = styled.View`
-  flex-direction: column;
-  margin-top: 20px;
-  padding: 0 30px;
+  flex: 1;
+  justify-content: center;
   align-items: center;
+  padding: 20px;
+  width: 100%;
 `;
 
 const LightingToggle = styled(TouchableOpacity)`
-  border-radius: 8px;
-  background-color: #f4f2a2;
   padding: 15px 30px;
-  border: 1px solid #000;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
+  background-color: #f4f2a2;
+  border-radius: 8px;
+  margin-top: 20px;
 `;
 
-const NavigationBar = styled.View`
-  background-color: #f3f4f6;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  padding: 10px;
-  margin-top: 20px;
+const ToggleText = styled(Text)`
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
 `;
 
 export default CameraPage;

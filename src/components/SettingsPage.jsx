@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components/native";
 import { ScrollView, Text } from "react-native";
-import NavigationBar from "./NavigationBar";
-import SettingItem from "./SettingItem";
+import SettingItem from './src/components/SettingItem';
+import NavigationBar from './src/components/NavigationBar';
 
 const SettingsPage = () => {
   const settingItems = [
@@ -13,38 +13,39 @@ const SettingsPage = () => {
   ];
 
   return (
-    <StyledSettingsPage>
-      <Header>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Settings Page</Text>
-      </Header>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <PageWrapper>
+      <Header>Settings Page</Header>
+      <ContentWrapper>
         {settingItems.map((item, index) => (
           <SettingItem key={index} title={item.title} />
         ))}
-      </ScrollView>
+      </ContentWrapper>
       <NavigationBar />
-    </StyledSettingsPage>
+    </PageWrapper>
   );
 };
 
-const StyledSettingsPage = styled.View`
-  background-color: #fff;
+const PageWrapper = styled.View`
   flex: 1;
-  max-width: 360px;
-  flex-direction: column;
-  overflow: hidden;
-  color: #000;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
 `;
 
-const Header = styled.View`
-  align-self: stretch;
-  width: 100%;
+const Header = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
   background-color: #aff397;
-  min-height: 100px;
-  padding: 37px 20px;
-  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+`;
+
+const ContentWrapper = styled.View`
+  flex: 1;
+  width: 100%;
   align-items: center;
+  padding: 20px;
 `;
 
 export default SettingsPage;

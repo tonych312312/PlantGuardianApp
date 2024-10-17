@@ -5,7 +5,7 @@ import { Image, Text } from "react-native";
 const NavItem = ({ icon, label }) => {
   return (
     <ItemWrapper>
-      <Icon source={{ uri: icon }} />
+      <Icon source={{ uri: icon }} resizeMode="contain" />
       <Label>{label}</Label>
     </ItemWrapper>
   );
@@ -18,9 +18,8 @@ const ItemWrapper = styled.View`
 `;
 
 const Icon = styled(Image)`
-  aspect-ratio: 1;
   width: 25px;
-  resize-mode: contain;
+  height: 25px;
 `;
 
 const Label = styled(Text)`

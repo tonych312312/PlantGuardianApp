@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components/native";
 import { ScrollView, Text } from "react-native";
-import NavigationBar from "./NavigationBar";
-import SensorCard from "./SensorCard";
+import SensorCard from './src/components/SensorCard';
+import NavigationBar from './src/components/NavigationBar';
 
 const SensorPage = () => {
   const sensorData = [
@@ -14,37 +14,38 @@ const SensorPage = () => {
 
   return (
     <PageWrapper>
-      <Header>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Sensor Page</Text>
-      </Header>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+      <Header>Sensor Page</Header>
+      <ContentWrapper>
         {sensorData.map((sensor, index) => (
           <SensorCard key={index} title={sensor.title} value={sensor.value} />
         ))}
-      </ScrollView>
+      </ContentWrapper>
       <NavigationBar />
     </PageWrapper>
   );
 };
 
 const PageWrapper = styled.View`
-  background-color: #fff;
   flex: 1;
-  max-width: 360px;
-  flex-direction: column;
-  overflow: hidden;
-  color: #000;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
 `;
 
-const Header = styled.View`
-  align-self: stretch;
-  width: 100%;
+const Header = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
   background-color: #aff397;
-  min-height: 100px;
-  padding: 37px;
-  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+`;
+
+const ContentWrapper = styled.View`
+  flex: 1;
+  width: 100%;
   align-items: center;
+  padding: 20px;
 `;
 
 export default SensorPage;

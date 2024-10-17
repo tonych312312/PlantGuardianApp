@@ -11,13 +11,10 @@ function Welcome() {
 }
 
 const WelcomeContainer = styled.View`
-  width: 100%;
-  background-color: #fff;
-  margin-top: 190px;
-  min-height: 100px;
-  padding: 37px;
+  flex: 1;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 `;
 
 export default Welcome;

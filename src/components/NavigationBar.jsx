@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components/native";
-import NavItem from "./NavItem";
+import NavItem from './NavItem';
+
+
 
 const NavigationBar = () => {
   const navItems = [
@@ -24,7 +26,8 @@ const NavWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  padding: 10px 15px;
+  padding: 10px;
+  height: 60px;
 `;
 
 export default NavigationBar;

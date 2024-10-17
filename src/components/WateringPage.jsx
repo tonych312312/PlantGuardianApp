@@ -1,22 +1,22 @@
 import React from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity } from "react-native";
-import NavigationBar from "./NavigationBar";
+import NavigationBar from './src/components/NavigationBar';
 
 const WateringPage = () => {
   return (
     <PageWrapper>
-      <Header>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Watering Page</Text>
-      </Header>
-      <LastWateredSection>
-        <Text style={{ fontSize: 18 }}>Last Watered:</Text>
-      </LastWateredSection>
-      <ManualWateringSection>
-        <ManualWateringButton>
-          <Text style={{ fontSize: 18 }}>Click to manually water</Text>
-        </ManualWateringButton>
-      </ManualWateringSection>
+      <Header>Watering Page</Header>
+      <ContentWrapper>
+        <Section>
+          <Text style={{ fontSize: 18 }}>Last Watered: </Text>
+        </Section>
+        <ButtonWrapper>
+          <ManualWateringButton activeOpacity={0.7}>
+            <ButtonText>Click to manually water</ButtonText>
+          </ManualWateringButton>
+        </ButtonWrapper>
+      </ContentWrapper>
       <NavigationBar />
     </PageWrapper>
   );
@@ -24,38 +24,48 @@ const WateringPage = () => {
 
 const PageWrapper = styled.View`
   flex: 1;
+  justify-content: space-between;
+  align-items: center;
   background-color: #fff;
 `;
 
-const Header = styled.View`
+const Header = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
   background-color: #aff397;
-  padding: 37px;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
 `;
 
-const LastWateredSection = styled.View`
-  background-color: #fff;
-  margin-top: 93px;
-  padding: 37px;
+const ContentWrapper = styled.View`
+  flex: 1;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  width: 100%;
 `;
 
-const ManualWateringSection = styled.View`
-  margin-top: 93px;
-  padding: 0 30px;
-  justify-content: center;
-  align-items: center;
+const Section = styled.View`
+  padding: 20px;
+`;
+
+const ButtonWrapper = styled.View`
+  padding: 20px;
 `;
 
 const ManualWateringButton = styled(TouchableOpacity)`
-  border-radius: 8px;
   background-color: #bbefff;
-  padding: 37px;
-  border: 1px solid #000;
+  padding: 15px 30px;
+  border-radius: 8px;
   width: 100%;
   align-items: center;
+`;
+
+const ButtonText = styled(Text)`
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
 `;
 
 export default WateringPage;

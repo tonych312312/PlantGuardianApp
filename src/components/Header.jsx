@@ -13,8 +13,7 @@ function Header() {
 const HeaderContainer = styled.View`
   width: 100%;
   background-color: #aff397;
-  min-height: 100px;
-  padding: 37px;
+  padding: 20px;
   justify-content: center;
   align-items: center;
 `;
