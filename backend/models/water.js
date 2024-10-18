@@ -1,16 +1,8 @@
 const mongoose = require('mongoose');
 
 const waterSchema = new mongoose.Schema({
-    time: {
-        type: Date,
-        required: true,
-        default: Date.now,
-        index: true
-    },
-    waterLevel: {
-        type: Number,
-        required: true
-    }
+    time: { type: Date, default: Date.now, index: true },
+    water: { type: Number }
 });
 
 const Water = mongoose.model('Water', waterSchema);

@@ -1,17 +1,9 @@
 const mongoose = require('mongoose');
 
 const phSchema = new mongoose.Schema({
-    time: {
-        type: Date,
-        required: true,
-        default: Date.now,
-        index: true
-    },
-    ph: {
-        type: Number,
-        required: true
-    }
+    time: { type: Date, default: Date.now, index: true },
+    ph: { type: Number }
 });
 
-const PH = mongoose.model('PH', phSchema);
+const PH = mongoose.model('pH', phSchema);
 module.exports = PH;
