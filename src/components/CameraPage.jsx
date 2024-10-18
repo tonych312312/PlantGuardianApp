@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import NavItem from './src/components/NavItem';
 
 const navigationItems = [
   { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9d16231fd234168a8ca0fc769cd7aa34015cfb7b0558ba85aff47715879ba53f?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Sensors" },
@@ -25,7 +24,6 @@ const CameraPage = () => {
           <ToggleText>{isLightOn ? "Turn off lighting" : "Turn on lighting"}</ToggleText>
         </LightingToggle>
       </MainContent>
-      <NavigationBar />
     </PageWrapper>
   );
 };

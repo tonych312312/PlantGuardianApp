@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components/native";
 import { ScrollView, Text } from "react-native";
-import SettingItem from './src/components/SettingItem';
-import NavigationBar from './src/components/NavigationBar';
+import SettingItem from './SettingItem';
 
 const SettingsPage = () => {
   const settingItems = [
@@ -20,7 +19,6 @@ const SettingsPage = () => {
           <SettingItem key={index} title={item.title} />
         ))}
       </ContentWrapper>
-      <NavigationBar />
     </PageWrapper>
   );
 };

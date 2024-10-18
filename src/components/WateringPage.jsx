@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity } from "react-native";
-import NavigationBar from './src/components/NavigationBar';
 
 const WateringPage = () => {
   return (
@@ -17,7 +16,6 @@ const WateringPage = () => {
           </ManualWateringButton>
         </ButtonWrapper>
       </ContentWrapper>
-      <NavigationBar />
     </PageWrapper>
   );
 };

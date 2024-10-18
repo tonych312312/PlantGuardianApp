@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components/native";
-import { Image, Text } from "react-native";
+import { Image, Text, TouchableOpacity } from "react-native";
 
-const NavItem = ({ icon, label }) => {
+const NavItem = ({ icon, label, onPress }) => {
   return (
-    <ItemWrapper>
-      <Icon source={{ uri: icon }} resizeMode="contain" />
-      <Label>{label}</Label>
-    </ItemWrapper>
+    <TouchableOpacity onPress={onPress}>
+      <ItemWrapper>
+        <Icon source={{ uri: icon }} resizeMode="contain" />
+        <Label>{label}</Label>
+      </ItemWrapper>
+    </TouchableOpacity>
   );
 };
 
@@ -17,7 +19,9 @@ const ItemWrapper = styled.View`
   margin: auto 0;
 `;
 
-const Icon = styled(Image)`
+const Icon = styled(Image).attrs(() => ({
+  resizeMode: 'contain',
+}))`
   width: 25px;
   height: 25px;
 `;

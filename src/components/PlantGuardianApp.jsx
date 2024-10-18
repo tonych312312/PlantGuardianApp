@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components/native";
 import Header from './Header';
 import Welcome from './Welcome';
-import NavigationBar from './NavigationBar';
-
 
 function PlantGuardianApp() {
   return (
@@ -12,7 +10,6 @@ function PlantGuardianApp() {
       <ContentContainer>
         <Welcome />
       </ContentContainer>
-      <NavigationBar />
     </AppContainer>
   );
 }

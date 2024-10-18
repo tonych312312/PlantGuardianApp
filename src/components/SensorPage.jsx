@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components/native";
 import { ScrollView, Text } from "react-native";
-import SensorCard from './src/components/SensorCard';
-import NavigationBar from './src/components/NavigationBar';
+import SensorCard from './SensorCard';
 
 const SensorPage = () => {
   const sensorData = [
@@ -20,7 +19,6 @@ const SensorPage = () => {
           <SensorCard key={index} title={sensor.title} value={sensor.value} />
         ))}
       </ContentWrapper>
-      <NavigationBar />
     </PageWrapper>
   );
 };
