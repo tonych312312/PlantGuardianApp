@@ -2,10 +2,15 @@ import React from "react";
 import styled from "styled-components/native";
 import { Text } from "react-native";
 
+const welcomeTextStyle = {
+  fontSize: 20,
+  color: "#000", // Black color
+};
+
 function Welcome() {
   return (
     <WelcomeContainer>
-      <Text style={{ fontSize: 20 }}>Welcome!</Text>
+      <Text style={welcomeTextStyle}>Welcome!</Text>
     </WelcomeContainer>
   );
 }

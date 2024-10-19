@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components/native";
 import { Text } from "react-native";
 
-const SensorCard = ({ title, value }) => {
+const SensorCard = ({ title, value, status }) => {
   return (
     <CardWrapper>
-      <Text>{title}: {value}</Text>
+      <SensorText>{title}: {status}{value}</SensorText>
     </CardWrapper>
   );
 };
@@ -20,6 +20,11 @@ const CardWrapper = styled.View`
   padding: 23px;
   justify-content: center;
   align-items: center;
+`;
+
+const SensorText = styled.Text`
+  font-size: 18px; /* Adjust the size as needed */
+  color: #000; /* Set to black */
 `;
 
 export default SensorCard;

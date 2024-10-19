@@ -39,11 +39,11 @@ const SensorPage = () => {
   const determinePHStatus = (phValue) => {
     const ph = parseFloat(phValue);
     if (ph < 6.5) {
-      return "Acidic, ";
+      return "Acidic | ";
     } else if (ph >= 6.5 && ph <= 7.5) {
-      return "Normal, ";
+      return "Normal | ";
     } else {
-      return "Basic, ";
+      return "Basic | ";
     }
   };
 
@@ -51,13 +51,11 @@ const SensorPage = () => {
   const determineMoistureStatus = (moistureValue) => {
     const moisture = parseInt(moistureValue, 10);
     if (moisture <= 300) {
-      return "Dry, ";
+      return "Dry | ";
     } else if (moisture > 340 && moisture <= 360) {
-      return "Normal, ";
-    } else if (moisture >= 400) {
-      return "Wet, ";
+      return "Normal | ";
     } else {
-      return "";
+      return "Wet | ";
     }
   };
 
@@ -65,13 +63,11 @@ const SensorPage = () => {
   const determineTemperatureStatus = (tempValue) => {
     const temp = parseFloat(tempValue);
     if (temp <= 72) {
-      return "Cold, ";
+      return "Cold | ";
     } else if (temp > 74 && temp <= 77) {
-      return "Normal, ";
-    } else if (temp > 77) {
-      return "Warm, ";
+      return "Normal | ";
     } else {
-      return "";
+      return "Warm | ";
     }
   };
 
@@ -79,13 +75,11 @@ const SensorPage = () => {
   const determineWaterLevelStatus = (waterValue) => {
     const water = parseInt(waterValue, 10);
     if (water <= 300) {
-      return "Low, ";
+      return "Low | ";
     } else if (water > 340 && water <= 360) {
-      return "Normal, ";
-    } else if (water >= 400) {
-      return "High, ";
+      return "Normal | ";
     } else {
-      return "";
+      return "High | ";
     }
   };
 

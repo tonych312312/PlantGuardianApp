@@ -2,13 +2,19 @@ import React from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity } from "react-native";
 
+// Define style constants
+const lastWateredTextStyle = {
+  fontSize: 18,
+  color: "#000", // Black color
+};
+
 const WateringPage = () => {
   return (
     <PageWrapper>
       <Header>Watering Page</Header>
       <ContentWrapper>
         <Section>
-          <Text style={{ fontSize: 18 }}>Last Watered: </Text>
+          <Text style={lastWateredTextStyle}>Last Watered: </Text>
         </Section>
         <ButtonWrapper>
           <ManualWateringButton activeOpacity={0.7}>

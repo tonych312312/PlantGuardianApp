@@ -2,10 +2,16 @@ import React from "react";
 import styled from "styled-components/native";
 import { Text } from "react-native";
 
+// Define style constants
+const desiredTextStyle = {
+  fontSize: 16,
+  color: "#000", // Black color
+};
+
 const SettingItem = ({ title }) => {
   return (
     <StyledSettingItem>
-      <Text>{title}:</Text>
+      <Text style={desiredTextStyle}>{title}:</Text>
     </StyledSettingItem>
   );
 };
