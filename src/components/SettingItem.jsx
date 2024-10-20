@@ -4,7 +4,7 @@ import { Text } from "react-native";
 
 // Define style constants
 const desiredTextStyle = {
-  fontSize: 16,
+  fontSize: 18,
   color: "#000", // Black color
 };
 

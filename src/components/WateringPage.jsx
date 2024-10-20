@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/native";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
 // Define style constants
 const lastWateredTextStyle = {
@@ -9,6 +9,46 @@ const lastWateredTextStyle = {
 };
 
 const WateringPage = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  let toggleTimeout; // Store the timeout to manage cancelation if needed
+
+  // Function to toggle pump on and then off after 5 seconds
+  const handleManualWatering = async () => {
+    if (isProcessing) return; // Prevent multiple rapid clicks
+    setIsProcessing(true); // Disable the button
+
+    try {
+      // Clear any existing timeout to avoid double toggling
+      clearTimeout(toggleTimeout);
+
+      // Set pump_on to 1 (turn on the pump)
+      await fetch("http://192.168.56.1:5000/api/control/togglePump", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Pump toggled ON");
+
+      // Automatically revert pump_on to 0 after 5 seconds
+      toggleTimeout = setTimeout(async () => {
+        await fetch("http://192.168.56.1:5000/api/control/togglePump", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("Pump automatically turned OFF");
+        setIsProcessing(false); // Re-enable the button
+      }, 5000);
+    } catch (error) {
+      console.error("Error toggling pump:", error);
+      setIsProcessing(false); // Re-enable the button in case of error
+    }
+  };
+
   return (
     <PageWrapper>
       <Header>Watering Page</Header>
@@ -17,8 +57,16 @@ const WateringPage = () => {
           <Text style={lastWateredTextStyle}>Last Watered: </Text>
         </Section>
         <ButtonWrapper>
-          <ManualWateringButton activeOpacity={0.7}>
-            <ButtonText>Click to manually water</ButtonText>
+          <ManualWateringButton
+            activeOpacity={0.7}
+            onPress={handleManualWatering}
+            disabled={isProcessing}
+          >
+            {isProcessing ? (
+              <ActivityIndicator color="#000" />
+            ) : (
+              <ButtonText>Click to manually water</ButtonText>
+            )}
           </ManualWateringButton>
         </ButtonWrapper>
       </ContentWrapper>

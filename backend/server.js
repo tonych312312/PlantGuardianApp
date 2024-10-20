@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const dataRoutes = require('./routes/dataRoutes');
+const controlRoutes = require('./routes/controlRoutes'); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,9 @@ app.use(express.json());
 
 // Use Data Routes
 app.use('/api/data', dataRoutes);
+
+// Use Control Routes
+app.use('/api/control', controlRoutes); 
 
 // Start Server
 app.listen(PORT, () => {

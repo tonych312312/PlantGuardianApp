@@ -38,9 +38,9 @@ const SensorPage = () => {
   // Helper function to determine pH status
   const determinePHStatus = (phValue) => {
     const ph = parseFloat(phValue);
-    if (ph < 6.5) {
+    if (ph < 5.5) {
       return "Acidic | ";
-    } else if (ph >= 6.5 && ph <= 7.5) {
+    } else if (ph >= 5.5 && ph <= 6.6) {
       return "Normal | ";
     } else {
       return "Basic | ";
@@ -105,7 +105,6 @@ const SensorPage = () => {
         <SensorCard 
           title="Current pH" 
           value={sensorData.phsens} 
-          status={determinePHStatus(sensorData.phsens)} 
         />
       </ContentWrapper>
     </PageWrapper>

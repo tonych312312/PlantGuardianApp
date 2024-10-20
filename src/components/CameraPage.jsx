@@ -1,29 +1,69 @@
 import React, { useState } from "react";
 import styled from "styled-components/native";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-
-const navigationItems = [
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9d16231fd234168a8ca0fc769cd7aa34015cfb7b0558ba85aff47715879ba53f?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Sensors" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/3fb269703f6222952140a7270f8552162c4128f8809b471c1ef50a664fefdbb3?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Camera" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/1f2e0b2d794cbf067546d6660055cb6424bb466a9545fda1b145f9a640607948?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Water" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e4829a149d472fb792d4c163cbeeb33a2eb50a15708d034ab00316cfc2b0c7d8?placeholderIfAbsent=true&apiKey=060d0e4eab7343618add43cffc270ace", label: "Settings" }
-];
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { WebView } from "react-native-webview";
 
 const CameraPage = () => {
-  const [isLightOn, setIsLightOn] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const toggleLight = () => {
-    setIsLightOn(!isLightOn);
+  // Function to handle lighting toggle
+  const handleLightingToggle = async () => {
+    if (isWaiting) {
+      console.log("Please wait before toggling again.");
+      return; // Prevent multiple rapid clicks
+    }
+
+    try {
+      setIsWaiting(true); // Set waiting state
+      setLoading(true); // Show loading indicator
+
+      // Toggle lighting by calling backend endpoint
+      const response = await fetch("http://192.168.56.1:5000/api/control/toggleLight", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`Lighting toggled to ${data.light_on === "1" ? "ON" : "OFF"}`);
+      } else {
+        console.error("Failed to toggle lighting:", await response.json());
+      }
+
+      // Keep loading spinner visible for an additional 2 seconds
+      setTimeout(() => {
+        setLoading(false); // Hide loading indicator
+        setIsWaiting(false); // Allow the button to be pressed again
+      }, 2000);
+    } catch (error) {
+      console.error("Error toggling lighting:", error);
+      setLoading(false); // Ensure loading is hidden even on error
+      setIsWaiting(false);
+    }
   };
 
   return (
     <PageWrapper>
       <Header>Camera Page</Header>
-      <MainContent>
-        <LightingToggle onPress={toggleLight} activeOpacity={0.7}>
-          <ToggleText>{isLightOn ? "Turn off lighting" : "Turn on lighting"}</ToggleText>
-        </LightingToggle>
-      </MainContent>
+      <CameraWrapper>
+        <WebView
+          source={{ uri: "https://websocket.stevekeller.dev/" }}
+          style={{ width: 320, height: 240 }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          mixedContentMode="always" // Allows mixed content (both HTTP and HTTPS)
+          startInLoadingState={true}
+          scalesPageToFit={true}
+        />
+      </CameraWrapper>
+      <ContentWrapper>
+        <LightingButton activeOpacity={0.7} onPress={handleLightingToggle} disabled={isWaiting}>
+          {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Turn on lighting</ButtonText>}
+        </LightingButton>
+      </ContentWrapper>
     </PageWrapper>
   );
 };
@@ -44,7 +84,13 @@ const Header = styled.Text`
   padding: 20px;
 `;
 
-const MainContent = styled.View`
+const CameraWrapper = styled.View`
+  width: 100%;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const ContentWrapper = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -52,14 +98,15 @@ const MainContent = styled.View`
   width: 100%;
 `;
 
-const LightingToggle = styled(TouchableOpacity)`
+const LightingButton = styled(TouchableOpacity)`
+  background-color: #fff89e;
   padding: 15px 30px;
-  background-color: #f4f2a2;
   border-radius: 8px;
-  margin-top: 20px;
+  width: 60%;
+  align-items: center;
 `;
 
-const ToggleText = styled(Text)`
+const ButtonText = styled(Text)`
   font-size: 18px;
   font-weight: bold;
   color: #000;
