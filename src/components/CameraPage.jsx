@@ -19,7 +19,7 @@ const CameraPage = () => {
       setLoading(true); // Show loading indicator
 
       // Toggle lighting by calling backend endpoint
-      const response = await fetch("http://192.168.56.1:5000/api/control/toggleLight", {
+      const response = await fetch("http://107.200.171.115:5000/api/control/toggleLight", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

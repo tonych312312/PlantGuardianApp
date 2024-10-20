@@ -14,7 +14,7 @@ const SensorPage = () => {
     // Fetch the latest data from the backend API
     const fetchData = async () => {
       try {
-        const response = await fetch("http://192.168.56.1:5000/api/data"); // Replace accordingly..
+        const response = await fetch("http://107.200.171.115:5000/api/data"); // Replace accordingly..
         const data = await response.json();
         setSensorData({
           moistureSens: data.moistureSens,

@@ -15,7 +15,7 @@ const WateringPage = () => {
   const handleManualWatering = async () => {
     try {
       // Set pump_on to 1 (turn on the pump)
-      await fetch("http://192.168.56.1:5000/api/control/togglePump", {
+      await fetch("http://107.200.171.115:5000/api/control/togglePump", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +28,7 @@ const WateringPage = () => {
 
       // Automatically revert pump_on to 0 after 5 seconds
       setTimeout(async () => {
-        await fetch("http://192.168.56.1:5000/api/control/togglePump", {
+        await fetch("http://107.200.171.115:5000/api/control/togglePump", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
