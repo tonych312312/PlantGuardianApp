@@ -48,9 +48,11 @@ const CameraPage = () => {
     <PageWrapper>
       <Header>Camera Page</Header>
       <ContentWrapper>
-        <LightingButton activeOpacity={0.7} onPress={handleLightingToggle} disabled={isWaiting}>
-          {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Turn on lighting</ButtonText>}
-        </LightingButton>
+        <BubbleWrapper>
+          <LightingButton activeOpacity={0.7} onPress={handleLightingToggle} disabled={isWaiting}>
+            {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Turn on lighting</ButtonText>}
+          </LightingButton>
+        </BubbleWrapper>
       </ContentWrapper>
     </PageWrapper>
   );
@@ -80,11 +82,21 @@ const ContentWrapper = styled.View`
   width: 100%;
 `;
 
-const LightingButton = styled(TouchableOpacity)`
+const BubbleWrapper = styled.View`
   background-color: #fff89e;
   padding: 15px 30px;
-  border-radius: 8px;
+  border-radius: 20px;
+  shadow-color: #000;
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.2;
+  shadow-radius: 4px;
+  elevation: 5;
   width: 60%;
+  align-items: center;
+`;
+
+const LightingButton = styled(TouchableOpacity)`
+  width: 100%;
   align-items: center;
 `;
 

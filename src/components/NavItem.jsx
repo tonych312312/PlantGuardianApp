@@ -28,8 +28,9 @@ const Icon = styled(Image).attrs(() => ({
 
 const Label = styled(Text)`
   margin-top: 4px;
-  font-size: 14px; /* Adjust the size as needed */
-  color: #000; /* Set to black */
+  font-size: 14px; 
+  color: #000;
+  font-weight: bold; 
 `;
 
 export default NavItem;

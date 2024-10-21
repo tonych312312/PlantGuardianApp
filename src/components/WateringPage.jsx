@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
-// Define style constants
-const lastWateredTextStyle = {
-  fontSize: 18,
-  color: "#000", // Black color
-};
-
 const WateringPage = () => {
   const [lastWatered, setLastWatered] = useState("");
   const [loading, setLoading] = useState(false);
@@ -50,9 +44,9 @@ const WateringPage = () => {
     <PageWrapper>
       <Header>Watering Page</Header>
       <ContentWrapper>
-        <Section>
-          <Text style={lastWateredTextStyle}>Last Watered: {lastWatered || "Not yet"}</Text>
-        </Section>
+        <BubbleWrapper>
+          <LastWateredText>Last Watered: {lastWatered || "Not yet"}</LastWateredText>
+        </BubbleWrapper>
         <ButtonWrapper>
           <ManualWateringButton activeOpacity={0.7} onPress={handleManualWatering} disabled={loading}>
             {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Click to manually water</ButtonText>}
@@ -87,8 +81,21 @@ const ContentWrapper = styled.View`
   width: 100%;
 `;
 
-const Section = styled.View`
-  padding: 20px;
+const BubbleWrapper = styled.View`
+  background-color: #e0f7fa;
+  padding: 15px 30px;
+  border-radius: 20px;
+  shadow-color: #000;
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.2;
+  shadow-radius: 4px;
+  elevation: 5;
+  margin-bottom: 20px;
+`;
+
+const LastWateredText = styled(Text)`
+  font-size: 18px;
+  color: #000;
 `;
 
 const ButtonWrapper = styled.View`
@@ -98,9 +105,14 @@ const ButtonWrapper = styled.View`
 const ManualWateringButton = styled(TouchableOpacity)`
   background-color: #bbefff;
   padding: 15px 30px;
-  border-radius: 8px;
+  border-radius: 20px;
   width: 100%;
   align-items: center;
+  shadow-color: #000;
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.2;
+  shadow-radius: 4px;
+  elevation: 5;
 `;
 
 const ButtonText = styled(Text)`

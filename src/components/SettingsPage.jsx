@@ -5,10 +5,10 @@ import SettingItem from './SettingItem';
 
 const SettingsPage = () => {
   const settingItems = [
-    { title: "Desired Moisture" },
-    { title: "Desired Temperature" },
-    { title: "Desired Water Level" },
-    { title: "Desired pH" },
+    { title: "Desired Moisture", value: "High" },
+    { title: "Desired Temperature", value: "Normal" },
+    { title: "Desired Water Level", value: "High" },
+    { title: "Desired pH", value: "Normal" },
   ];
 
   return (
@@ -16,7 +16,7 @@ const SettingsPage = () => {
       <Header>Settings Page</Header>
       <ContentWrapper>
         {settingItems.map((item, index) => (
-          <SettingItem key={index} title={item.title} />
+          <SettingItem key={index} title={item.title} value={item.value} />
         ))}
       </ContentWrapper>
     </PageWrapper>

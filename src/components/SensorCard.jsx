@@ -5,26 +5,35 @@ import { Text } from "react-native";
 const SensorCard = ({ title, value, status }) => {
   return (
     <CardWrapper>
-      <SensorText>{title}: {status}{value}</SensorText>
+      <SensorText>
+        {title}: <BoldText>{status}{value}</BoldText>
+      </SensorText>
     </CardWrapper>
   );
 };
 
 const CardWrapper = styled.View`
-  align-self: stretch;
-  width: 100%;
-  background-color: #fff;
-  margin-top: 16px;
-  min-height: 100px;
-  text-align: center;
-  padding: 23px;
+  width: 90%; 
+  background-color: #e0f7fa;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 10px 0;
   justify-content: center;
   align-items: center;
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.2;
+  shadow-radius: 4px;
+  elevation: 3;
 `;
 
-const SensorText = styled.Text`
-  font-size: 18px; /* Adjust the size as needed */
-  color: #000; /* Set to black */
+const SensorText = styled(Text)`
+  font-size: 18px;
+  color: #000;
+`;
+
+const BoldText = styled(Text)`
+  font-weight: bold;
 `;
 
 export default SensorCard;
