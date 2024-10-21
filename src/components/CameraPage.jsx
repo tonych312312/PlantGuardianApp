@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
-import { WebView } from "react-native-webview";
 
 const CameraPage = () => {
   const [isWaiting, setIsWaiting] = useState(false);
@@ -28,7 +27,7 @@ const CameraPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(`Lighting toggled to ${data.light_on === "1" ? "ON" : "OFF"}`);
+        console.log(`Lighting toggled to ${data.light_on === "3" ? "ON" : "OFF"}`);
       } else {
         console.error("Failed to toggle lighting:", await response.json());
       }
@@ -48,17 +47,6 @@ const CameraPage = () => {
   return (
     <PageWrapper>
       <Header>Camera Page</Header>
-      <CameraWrapper>
-        <WebView
-          source={{ uri: "https://websocket.stevekeller.dev/" }}
-          style={{ width: 320, height: 240 }}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          mixedContentMode="always" // Allows mixed content (both HTTP and HTTPS)
-          startInLoadingState={true}
-          scalesPageToFit={true}
-        />
-      </CameraWrapper>
       <ContentWrapper>
         <LightingButton activeOpacity={0.7} onPress={handleLightingToggle} disabled={isWaiting}>
           {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Turn on lighting</ButtonText>}
@@ -82,12 +70,6 @@ const Header = styled.Text`
   text-align: center;
   width: 100%;
   padding: 20px;
-`;
-
-const CameraWrapper = styled.View`
-  width: 100%;
-  align-items: center;
-  margin-top: 20px;
 `;
 
 const ContentWrapper = styled.View`

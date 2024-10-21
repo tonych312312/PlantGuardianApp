@@ -30,7 +30,7 @@ const SensorPage = () => {
     fetchData();
 
     // Fetch every minute
-    const interval = setInterval(fetchData, 60000);
+    const interval = setInterval(fetchData, 30000);
 
     return () => clearInterval(interval); // Clean up the interval on unmount
   }, []);
@@ -39,11 +39,11 @@ const SensorPage = () => {
   const determinePHStatus = (phValue) => {
     const ph = parseFloat(phValue);
     if (ph < 5.5) {
-      return "Acidic | ";
+      return "Acidic  ";
     } else if (ph >= 5.5 && ph <= 6.6) {
-      return "Normal | ";
+      return "Normal  ";
     } else {
-      return "Basic | ";
+      return "Basic  ";
     }
   };
 
@@ -51,11 +51,11 @@ const SensorPage = () => {
   const determineMoistureStatus = (moistureValue) => {
     const moisture = parseInt(moistureValue, 10);
     if (moisture <= 300) {
-      return "Dry | ";
-    } else if (moisture > 340 && moisture <= 360) {
+      return "Wet | ";
+    } else if (moisture > 300 && moisture <= 400) {
       return "Normal | ";
     } else {
-      return "Wet | ";
+      return "Dry | ";
     }
   };
 
@@ -74,9 +74,9 @@ const SensorPage = () => {
   // Helper function to determine water level status (same as moisture)
   const determineWaterLevelStatus = (waterValue) => {
     const water = parseInt(waterValue, 10);
-    if (water <= 300) {
+    if (water <= 572) {
       return "Low | ";
-    } else if (water > 340 && water <= 360) {
+    } else if (water > 572 && water <= 648 ) {
       return "Normal | ";
     } else {
       return "High | ";
@@ -95,7 +95,7 @@ const SensorPage = () => {
         <SensorCard 
           title="Current Temperature" 
           value={sensorData.temperatureF} 
-          status={determineTemperatureStatus(sensorData.temperatureF)} 
+          //status={determineTemperatureStatus(sensorData.temperatureF)} 
         />
         <SensorCard 
           title="Current Water Level" 
@@ -103,8 +103,9 @@ const SensorPage = () => {
           status={determineWaterLevelStatus(sensorData.waterlevelSens)} 
         />
         <SensorCard 
-          title="Current pH" 
-          value={sensorData.phsens} 
+          title="Current pH " 
+          // value={sensorData.phsens} 
+          status={determinePHStatus(sensorData.phsens)} 
         />
       </ContentWrapper>
     </PageWrapper>
