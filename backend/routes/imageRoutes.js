@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Image = require('../models/image'); // Import the image model
+const Image = require('../models/images'); // Import the image model
 
 // Endpoint to upload images
 router.post('/uploadImage', async (req, res) => {
@@ -17,20 +17,22 @@ router.post('/uploadImage', async (req, res) => {
     }
 });
 
-// Endpoint to get the latest image
+// Endpoint to get the latest image in Base64 format
 router.get('/latestImage', async (req, res) => {
     try {
-        const latestImage = await Image.findOne().sort({ _id: -1 }); // Get the most recent image by _id
-        if (!latestImage) {
+        const latestImage = await Image.findOne().sort({ _id: -1 }); // Get the most recent image
+        if (!latestImage || !latestImage.buffer) {
             return res.status(404).send("No image found");
         }
 
-        res.contentType('image/jpeg'); // Set response MIME type to JPEG
-        res.send(latestImage.buffer); // Send the binary image data
+        // Convert binary data to Base64 and send as JSON
+        const base64Image = latestImage.buffer.toString('base64');
+        res.json({ image: `data:image/jpeg;base64,${base64Image}` }); // Embed MIME type
     } catch (err) {
         console.error("Error retrieving image:", err);
         res.sendStatus(500); // Respond with an error status
     }
 });
+
 
 module.exports = router;

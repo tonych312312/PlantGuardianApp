@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
-import { View, Text, TouchableOpacity, ActivityIndicator, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 const CameraPage = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUri, setImageUri] = useState(null);
-  const [imageLoading, setImageLoading] = useState(true);
 
   // Function to handle lighting toggle
   const handleLightingToggle = async () => {
@@ -46,37 +45,41 @@ const CameraPage = () => {
     }
   };
 
-  // Function to fetch the latest image from the backend
+  // Function to fetch the latest image in Base64 format
   const fetchLatestImage = async () => {
-    setImageLoading(true);
     try {
       const response = await fetch("http://107.200.171.115:5000/api/images/latestImage");
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        setImageUri(url);
+      const data = await response.json();
+
+      if (data.image) {
+        setImageUri(data.image); // Set the Base64 image URI directly
       } else {
-        console.error("Failed to fetch image:", response.statusText);
+        console.error("No image data received");
       }
     } catch (error) {
       console.error("Error fetching image:", error);
     }
-    setImageLoading(false);
   };
 
-  // Fetch the latest image on component mount
+  // Fetch the latest image every 10 seconds
   useEffect(() => {
-    fetchLatestImage();
+    fetchLatestImage(); // Initial fetch on mount
+
+    // Set an interval to fetch the latest image every 10 seconds
+    const intervalId = setInterval(fetchLatestImage, 10000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
     <PageWrapper>
       <Header>Camera Page</Header>
       <ContentWrapper>
-        {imageLoading ? (
-          <ActivityIndicator size="large" color="#000" />
+        {imageUri ? (
+          <StyledImage source={{ uri: imageUri }} />
         ) : (
-          imageUri && <StyledImage source={{ uri: imageUri }} />
+          <Text>No image available</Text>
         )}
         <BubbleWrapper>
           <LightingButton activeOpacity={0.7} onPress={handleLightingToggle} disabled={isWaiting}>
@@ -141,7 +144,7 @@ const StyledImage = styled.Image`
   height: 300px;
   margin-bottom: 20px;
   border-radius: 10px;
-  background-color: #ccc; /* Placeholder color while image is loading */
+  background-color: #ccc;
 `;
 
 export default CameraPage;
