@@ -39,11 +39,11 @@ const SensorPage = () => {
   const determinePHStatus = (phValue) => {
     const ph = parseFloat(phValue);
     if (ph < 5.5) {
-      return "Acidic  ";
+      return "Acidic - Below 6 ";
     } else if (ph >= 5.5 && ph <= 6.6) {
-      return "Normal  ";
+      return "Normal - Between 6-8 ";
     } else {
-      return "Basic  ";
+      return "Basic - Above 8 ";
     }
   };
 

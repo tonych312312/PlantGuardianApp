@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Image } from "react-native";
 
 const CameraPage = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imageUri, setImageUri] = useState(null);
+  const [imageLoading, setImageLoading] = useState(true);
 
   // Function to handle lighting toggle
   const handleLightingToggle = async () => {
@@ -44,10 +46,38 @@ const CameraPage = () => {
     }
   };
 
+  // Function to fetch the latest image from the backend
+  const fetchLatestImage = async () => {
+    setImageLoading(true);
+    try {
+      const response = await fetch("http://107.200.171.115:5000/api/images/latestImage");
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        setImageUri(url);
+      } else {
+        console.error("Failed to fetch image:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+    setImageLoading(false);
+  };
+
+  // Fetch the latest image on component mount
+  useEffect(() => {
+    fetchLatestImage();
+  }, []);
+
   return (
     <PageWrapper>
       <Header>Camera Page</Header>
       <ContentWrapper>
+        {imageLoading ? (
+          <ActivityIndicator size="large" color="#000" />
+        ) : (
+          imageUri && <StyledImage source={{ uri: imageUri }} />
+        )}
         <BubbleWrapper>
           <LightingButton activeOpacity={0.7} onPress={handleLightingToggle} disabled={isWaiting}>
             {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Turn on lighting</ButtonText>}
@@ -104,6 +134,14 @@ const ButtonText = styled(Text)`
   font-size: 18px;
   font-weight: bold;
   color: #000;
+`;
+
+const StyledImage = styled.Image`
+  width: 300px;
+  height: 300px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #ccc; /* Placeholder color while image is loading */
 `;
 
 export default CameraPage;
