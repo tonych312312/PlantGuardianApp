@@ -35,19 +35,18 @@ const SensorPage = () => {
     return () => clearInterval(interval); // Clean up the interval on unmount
   }, []);
 
-  // Helper function to determine pH status
+  // Helper functions to determine status
   const determinePHStatus = (phValue) => {
     const ph = parseFloat(phValue);
     if (ph < 5.5) {
-      return "Acidic - Below 6 ";
+      return "Acidic | Below 6 ";
     } else if (ph >= 5.5 && ph <= 6.6) {
-      return "Normal - Between 6-8 ";
+      return "Normal | Between 6-8 ";
     } else {
-      return "Basic - Above 8 ";
+      return "Basic | Above 8 ";
     }
   };
 
-  // Helper function to determine moisture status
   const determineMoistureStatus = (moistureValue) => {
     const moisture = parseInt(moistureValue, 10);
     if (moisture <= 300) {
@@ -59,7 +58,6 @@ const SensorPage = () => {
     }
   };
 
-  // Helper function to determine temperature status
   const determineTemperatureStatus = (tempValue) => {
     const temp = parseFloat(tempValue);
     if (temp <= 72) {
@@ -71,7 +69,6 @@ const SensorPage = () => {
     }
   };
 
-  // Helper function to determine water level status (same as moisture)
   const determineWaterLevelStatus = (waterValue) => {
     const water = parseInt(waterValue, 10);
     if (water <= 572) {
@@ -123,6 +120,7 @@ const Header = styled.Text`
   font-size: 24px;
   font-weight: bold;
   background-color: #aff397;
+  color: #2e7d32; 
   text-align: center;
   width: 100%;
   padding: 20px;

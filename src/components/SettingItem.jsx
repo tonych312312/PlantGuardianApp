@@ -30,11 +30,12 @@ const StyledSettingItem = styled.View`
 
 const SettingText = styled(Text)`
   font-size: 18px;
+  color: #000; 
 `;
 
 const SettingValue = styled(Text)`
   font-weight: bold;
-  color: #000;
+  color: #000; 
   font-size: 18px;
 `;
 

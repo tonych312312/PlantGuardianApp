@@ -72,11 +72,11 @@ router.post('/togglePump', async (req, res) => {
         }
 
         // Set pump_on to 1 if it's not already 1, otherwise set it to 2
-        controlData.pump_on = controlData.pump_on === "1" ? "2" : "1";
+        controlData.pump_on = controlData.pump_on === "2" ? "1" : "2";
         await controlData.save();
 
         // Log to backend terminal
-        console.log(`Pump status: ${controlData.pump_on === "1" ? "ON" : "OFF"}`);
+        console.log(`Pump status: ${controlData.pump_on === "2" ? "ON" : "OFF"}`);
 
         res.json({ message: "Pump state changed", pump_on: controlData.pump_on });
 
@@ -105,6 +105,44 @@ router.post('/toggleLight', async (req, res) => {
     } catch (error) {
         console.error("Error changing light state:", error);
         res.status(500).json({ message: 'Failed to change light state', error });
+    }
+});
+
+// Route to set camera_on to 1 when entering Camera page
+router.post('/enterCamera', async (req, res) => {
+    try {
+        const controlData = await Control.findOne();
+        if (!controlData) {
+            return res.status(404).json({ message: "Control data not found." });
+        }
+
+        controlData.camera_on = "1";
+        await controlData.save();
+
+        console.log("Camera status: ON");
+        res.json({ message: "Camera turned ON", camera_on: controlData.camera_on });
+    } catch (err) {
+        console.error("Error turning camera ON:", err);
+        res.status(500).json({ message: "Failed to turn camera ON", error: err });
+    }
+});
+
+// Route to set camera_on to 0 when exiting Camera page
+router.post('/exitCamera', async (req, res) => {
+    try {
+        const controlData = await Control.findOne();
+        if (!controlData) {
+            return res.status(404).json({ message: "Control data not found." });
+        }
+
+        controlData.camera_on = "0";
+        await controlData.save();
+
+        console.log("Camera status: OFF");
+        res.json({ message: "Camera turned OFF", camera_on: controlData.camera_on });
+    } catch (err) {
+        console.error("Error turning camera OFF:", err);
+        res.status(500).json({ message: "Failed to turn camera OFF", error: err });
     }
 });
 

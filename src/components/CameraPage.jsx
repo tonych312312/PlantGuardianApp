@@ -1,24 +1,61 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Image } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 
 const CameraPage = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUri, setImageUri] = useState(null);
 
+  // Toggle camera_on to 1 when page is focused and 0 when unfocused
+  useFocusEffect(
+    React.useCallback(() => {
+      const enableCamera = async () => {
+        try {
+          await fetch("http://107.200.171.115:5000/api/control/enterCamera", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        } catch (error) {
+          console.error("Error enabling camera:", error);
+        }
+      };
+
+      const disableCamera = async () => {
+        try {
+          await fetch("http://107.200.171.115:5000/api/control/exitCamera", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        } catch (error) {
+          console.error("Error disabling camera:", error);
+        }
+      };
+
+      // Enable camera when entering
+      enableCamera();
+
+      // Disable camera when leaving
+      return () => disableCamera();
+    }, [])
+  );
+
   // Function to handle lighting toggle
   const handleLightingToggle = async () => {
     if (isWaiting) {
       console.log("Please wait before toggling again.");
-      return; // Prevent multiple rapid clicks
+      return;
     }
 
     try {
-      setIsWaiting(true); // Set waiting state
-      setLoading(true); // Show loading indicator
+      setIsWaiting(true);
+      setLoading(true);
 
-      // Toggle lighting by calling backend endpoint
       const response = await fetch("http://107.200.171.115:5000/api/control/toggleLight", {
         method: "POST",
         headers: {
@@ -33,36 +70,34 @@ const CameraPage = () => {
         console.error("Failed to toggle lighting:", await response.json());
       }
 
-      // Keep loading spinner visible for an additional 2 seconds
       setTimeout(() => {
-        setLoading(false); // Hide loading indicator
-        setIsWaiting(false); // Allow the button to be pressed again
+        setLoading(false);
+        setIsWaiting(false);
       }, 2000);
     } catch (error) {
       console.error("Error toggling lighting:", error);
-      setLoading(false); // Ensure loading is hidden even on error
+      setLoading(false);
       setIsWaiting(false);
-    }
-  };
-
-  // Function to fetch the latest image in Base64 format
-  const fetchLatestImage = async () => {
-    try {
-      const response = await fetch("http://107.200.171.115:5000/api/images/latestImage");
-      const data = await response.json();
-
-      if (data.image) {
-        setImageUri(data.image); // Set the Base64 image URI directly
-      } else {
-        console.error("No image data received");
-      }
-    } catch (error) {
-      console.error("Error fetching image:", error);
     }
   };
 
   // Fetch the latest image every 10 seconds
   useEffect(() => {
+    const fetchLatestImage = async () => {
+      try {
+        const response = await fetch("http://107.200.171.115:5000/api/images/latestImage");
+        const data = await response.json();
+
+        if (data.image) {
+          setImageUri(data.image);
+        } else {
+          console.error("No image data received");
+        }
+      } catch (error) {
+        console.error("Error fetching image:", error);
+      }
+    };
+
     fetchLatestImage(); // Initial fetch on mount
 
     // Set an interval to fetch the latest image every 10 seconds
@@ -102,6 +137,7 @@ const Header = styled.Text`
   font-size: 24px;
   font-weight: bold;
   background-color: #aff397;
+  color: #2e7d32; 
   text-align: center;
   width: 100%;
   padding: 20px;

@@ -4,6 +4,7 @@ const controlSchema = new mongoose.Schema({
     id: String,
     pump_on: String,
     light_on: String,
+    camera_on: String, 
 }, { collection: 'control' });
 
 const Control = mongoose.model('Control', controlSchema);

@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
-import { Image, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
 
 const NavItem = ({ icon, label, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <ItemWrapper>
-        <Icon source={{ uri: icon }} resizeMode="contain" />
+        <Icon name={icon} size={25} color="#000" /> 
         <Label>{label}</Label>
       </ItemWrapper>
     </TouchableOpacity>
@@ -19,18 +20,11 @@ const ItemWrapper = styled.View`
   margin: auto 0;
 `;
 
-const Icon = styled(Image).attrs(() => ({
-  resizeMode: 'contain',
-}))`
-  width: 25px;
-  height: 25px;
-`;
-
 const Label = styled(Text)`
   margin-top: 4px;
-  font-size: 14px; 
+  font-size: 14px;
+  font-weight: bold;
   color: #000;
-  font-weight: bold; 
 `;
 
 export default NavItem;

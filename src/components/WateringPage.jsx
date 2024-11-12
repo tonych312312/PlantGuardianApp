@@ -68,6 +68,7 @@ const Header = styled.Text`
   font-size: 24px;
   font-weight: bold;
   background-color: #aff397;
+  color: #2e7d32; 
   text-align: center;
   width: 100%;
   padding: 20px;
