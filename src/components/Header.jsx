@@ -2,20 +2,22 @@ import React from "react";
 import styled from "styled-components/native";
 import { Text } from "react-native";
 
-function Header() {
-  return (
-    <HeaderContainer>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Plant Guardian</Text>
-    </HeaderContainer>
-  );
-}
+const Header = () => (
+  <HeaderContainer>
+    <HeaderText>Plant Guardian App</HeaderText>
+  </HeaderContainer>
+);
 
 const HeaderContainer = styled.View`
-  width: 100%;
-  background-color: #aff397;
+  background-color: #aff397; 
   padding: 20px;
-  justify-content: center;
-  align-items: center;
+`;
+
+const HeaderText = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: #2e7d32;
+  text-align: center;
 `;
 
 export default Header;
