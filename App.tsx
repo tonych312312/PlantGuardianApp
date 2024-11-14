@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PlantGuardianApp from './src/components/PlantGuardianApp';
@@ -11,7 +12,51 @@ import styled from 'styled-components/native';
 
 const Stack = createStackNavigator();
 
+// Define plant presets globally to match what’s in `SettingsPage`
+const plantPresets = {
+  Cactus: { moistureRange: [400, Infinity] },
+  Fern: { moistureRange: [0, 300] },
+  Orchid: { moistureRange: [0, 300] },
+  "Spider Plant": { moistureRange: [301, 400] },
+  "Aloe Vera": { moistureRange: [400, Infinity] },
+};
+
 const App = () => {
+  const [selectedPlant, setSelectedPlant] = useState("Cactus"); // Track selected plant
+  const desiredMoistureRange = plantPresets[selectedPlant].moistureRange;
+
+  // Function to handle plant change from SettingsPage
+  const handlePlantChange = (newPlant) => {
+    setSelectedPlant(newPlant);
+  };
+
+  // Function to check moisture level and display a notification
+  const checkMoistureStatus = async () => {
+    try {
+      const response = await fetch("http://107.200.171.115:5000/api/data");
+      const latestData = await response.json();
+      const moistureValue = parseInt(latestData.moistureSens, 10);
+
+      if (moistureValue < desiredMoistureRange[0]) {
+        Alert.alert("Notification", "Your plant has more than enough water.");
+      } else if (moistureValue > desiredMoistureRange[1]) {
+        Alert.alert("Notification", "Your plant should be watered soon.");
+      } else {
+        Alert.alert("Notification", "Your plant is doing well and has enough water.");
+      }
+    } catch (error) {
+      console.error("Error fetching data for moisture check:", error);
+    }
+  };
+
+  // Set up the interval for the moisture check every 3 minutes
+  useEffect(() => {
+    const intervalId = setInterval(checkMoistureStatus, 3 * 60 * 1000); // 3 minutes 
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [desiredMoistureRange]); // Re-run when desiredMoistureRange changes
+
   return (
     <NavigationContainer>
       <AppContainer>
@@ -20,8 +65,12 @@ const App = () => {
             <Stack.Screen name="Home" component={PlantGuardianApp} />
             <Stack.Screen name="Sensors" component={SensorPage} />
             <Stack.Screen name="Camera" component={CameraPage} />
-            <Stack.Screen name="Water" component={WateringPage} />
-            <Stack.Screen name="Settings" component={SettingsPage} />
+            <Stack.Screen name="Water">
+              {() => <WateringPage selectedPlant={selectedPlant} />}
+            </Stack.Screen>
+            <Stack.Screen name="Settings">
+              {() => <SettingsPage selectedPlant={selectedPlant} onPlantChange={handlePlantChange} />}
+            </Stack.Screen>
           </Stack.Navigator>
         </ContentContainer>
         <NavigationBar />

@@ -98,7 +98,7 @@ const CameraPage = () => {
       }
     };
 
-    fetchLatestImage(); // Initial fetch on mount
+    fetchLatestImage(); 
 
     // Set an interval to fetch the latest image every 10 seconds
     const intervalId = setInterval(fetchLatestImage, 10000);

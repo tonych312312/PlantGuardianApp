@@ -2,41 +2,93 @@ import React, { useState } from "react";
 import styled from "styled-components/native";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
-const WateringPage = () => {
+// Define plant presets, ideally matching what’s set in `SettingsPage` and `app.tsx`
+const plantPresets = {
+  Cactus: { moistureRange: [400, Infinity], temperature: "High", waterLevel: "Low", pH: "Slightly Acidic" },
+  Fern: { moistureRange: [0, 300], temperature: "Normal", waterLevel: "High", pH: "Slightly Acidic" },
+  Orchid: { moistureRange: [0, 300], temperature: "Warm", waterLevel: "Moderate", pH: "Slightly Acidic" },
+  "Spider Plant": { moistureRange: [301, 400], temperature: "Normal", waterLevel: "Moderate", pH: "Neutral" },
+  "Aloe Vera": { moistureRange: [400, Infinity], temperature: "High", waterLevel: "Low", pH: "Neutral" },
+};
+
+const WateringPage = ({ selectedPlant = "Cactus" }) => {
   const [lastWatered, setLastWatered] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(false);
+
+  // Get the desired moisture range for the selected plant
+  const desiredMoistureRange = plantPresets[selectedPlant].moistureRange;
 
   // Function to handle manual watering
   const handleManualWatering = async () => {
     try {
-      // Set loading state
       setLoading(true);
 
-      // Set pump_on to 1 (turn on the pump)
+      // Turn on the water pump
       await fetch("http://107.200.171.115:5000/api/control/togglePump", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
 
-      // Set the "Last Watered" state to the current date and time
       const currentDateTime = new Date().toLocaleString();
       setLastWatered(currentDateTime);
 
-      // Automatically revert pump_on to 2 after 5 seconds and hide loading spinner
       setTimeout(async () => {
         await fetch("http://107.200.171.115:5000/api/control/togglePump", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         });
-        setLoading(false); // Stop loading after 5 seconds
+        setLoading(false);
       }, 5000);
     } catch (error) {
       console.error("Error toggling pump:", error);
-      setLoading(false); // Stop loading on error
+      setLoading(false);
+    }
+  };
+
+  // Function to check if moisture is within range and trigger watering if needed
+  const handleWateringCheck = async () => {
+    setChecking(true);
+
+    try {
+      // Fetch the latest sensor data
+      const response = await fetch("http://107.200.171.115:5000/api/data");
+      const latestData = await response.json();
+      const moistureValue = parseInt(latestData.moistureSens, 10);
+
+      // Determine if the plant is overwatered, needs watering, or is within range
+      if (moistureValue < desiredMoistureRange[0]) {
+        console.log("Your plant has more than enough water.");
+        alert("Your plant has more than enough water."); // Display notification
+      } else if (moistureValue > desiredMoistureRange[1]) {
+        console.log("Your plant should be watered soon.");
+        alert("Your plant should be watered soon."); // Display notification
+
+        // Trigger watering by toggling the water pump
+        await fetch("http://107.200.171.115:5000/api/control/togglePump", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const currentDateTime = new Date().toLocaleString();
+        setLastWatered(currentDateTime);
+
+        // Automatically turn off pump after 5 seconds
+        setTimeout(async () => {
+          await fetch("http://107.200.171.115:5000/api/control/togglePump", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          });
+          setChecking(false);
+        }, 5000);
+      } else {
+        console.log("Your plant is doing well and has enough water.");
+        alert("Your plant is doing well and has enough water."); // Display notification
+      }
+    } catch (error) {
+      console.error("Error during watering check:", error);
+    } finally {
+      setChecking(false);
     }
   };
 
@@ -47,16 +99,24 @@ const WateringPage = () => {
         <BubbleWrapper>
           <LastWateredText>Last Watered: {lastWatered || "Not yet"}</LastWateredText>
         </BubbleWrapper>
+
         <ButtonWrapper>
           <ManualWateringButton activeOpacity={0.7} onPress={handleManualWatering} disabled={loading}>
             {loading ? <ActivityIndicator color="#000" /> : <ButtonText>Click to manually water</ButtonText>}
           </ManualWateringButton>
+        </ButtonWrapper>
+
+        <ButtonWrapper>
+          <WateringCheckButton activeOpacity={0.7} onPress={handleWateringCheck} disabled={checking}>
+            {checking ? <ActivityIndicator color="#000" /> : <ButtonText>Watering Check</ButtonText>}
+          </WateringCheckButton>
         </ButtonWrapper>
       </ContentWrapper>
     </PageWrapper>
   );
 };
 
+// Styles
 const PageWrapper = styled.View`
   flex: 1;
   justify-content: space-between;
@@ -104,6 +164,19 @@ const ButtonWrapper = styled.View`
 `;
 
 const ManualWateringButton = styled(TouchableOpacity)`
+  background-color: #bbefff;
+  padding: 15px 30px;
+  border-radius: 20px;
+  width: 100%;
+  align-items: center;
+  shadow-color: #000;
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.2;
+  shadow-radius: 4px;
+  elevation: 5;
+`;
+
+const WateringCheckButton = styled(TouchableOpacity)`
   background-color: #bbefff;
   padding: 15px 30px;
   border-radius: 20px;

@@ -3,24 +3,24 @@ import styled from "styled-components/native";
 import { View, Text, Modal, TouchableOpacity, ScrollView } from "react-native";
 import SettingItem from './SettingItem';
 
+// Define plant presets with user-friendly moisture levels
 const plantPresets = {
-  Cactus: { moisture: "Low", temperature: "High", waterLevel: "Low", pH: "Slightly Acidic" },
-  Fern: { moisture: "High", temperature: "Normal", waterLevel: "High", pH: "Slightly Acidic" },
-  Orchid: { moisture: "Moderate", temperature: "Warm", waterLevel: "Moderate", pH: "Slightly Acidic" },
-  "Spider Plant": { moisture: "Moderate", temperature: "Normal", waterLevel: "Moderate", pH: "Neutral" },
-  "Aloe Vera": { moisture: "Low", temperature: "High", waterLevel: "Low", pH: "Neutral" },
+  Cactus: { moisture: "Dry", temperature: "High", waterLevel: "Low", pH: "Slightly Acidic" },
+  Fern: { moisture: "Wet", temperature: "Normal", waterLevel: "High", pH: "Slightly Acidic" },
+  Orchid: { moisture: "Wet", temperature: "Warm", waterLevel: "Moderate", pH: "Slightly Acidic" },
+  "Spider Plant": { moisture: "Normal", temperature: "Normal", waterLevel: "Moderate", pH: "Neutral" },
+  "Aloe Vera": { moisture: "Dry", temperature: "High", waterLevel: "Low", pH: "Neutral" },
 };
 
-const SettingsPage = () => {
-  const [selectedPlant, setSelectedPlant] = useState("Cactus");
-  const [settings, setSettings] = useState(plantPresets[selectedPlant]);
+const SettingsPage = ({ selectedPlant, onPlantChange }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handlePlantChange = (plant) => {
-    setSelectedPlant(plant);
-    setSettings(plantPresets[plant]);
+    onPlantChange(plant); // Notify app of plant change
     setModalVisible(false);
   };
+
+  const settings = plantPresets[selectedPlant];
 
   return (
     <PageWrapper>

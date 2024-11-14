@@ -12,12 +12,11 @@ connectDB();
 
 // Enable CORS
 app.use(cors({
-  origin: '*' // Replace '*' with your frontend origin for more security, e.g., 'http://your-frontend-domain.com'
+  origin: '*' // Replace '*' accordingly
 }));
 
-// Middleware to parse JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Enable parsing of form data if needed
+app.use(express.urlencoded({ extended: true })); 
 
 // Use Data Routes
 app.use('/api/data', dataRoutes);
