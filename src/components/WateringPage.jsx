@@ -4,11 +4,11 @@ import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
 // Define plant presets, ideally matching what’s set in `SettingsPage` and `app.tsx`
 const plantPresets = {
-  Cactus: { moistureRange: [400, Infinity], temperature: "High", waterLevel: "Low", pH: "Slightly Acidic" },
-  Fern: { moistureRange: [0, 300], temperature: "Normal", waterLevel: "High", pH: "Slightly Acidic" },
-  Orchid: { moistureRange: [0, 300], temperature: "Warm", waterLevel: "Moderate", pH: "Slightly Acidic" },
-  "Spider Plant": { moistureRange: [301, 400], temperature: "Normal", waterLevel: "Moderate", pH: "Neutral" },
-  "Aloe Vera": { moistureRange: [400, Infinity], temperature: "High", waterLevel: "Low", pH: "Neutral" },
+  Cactus: { moistureRange: [450, Infinity], temperature: "High", waterLevel: "Low", pH: "Slightly Acidic" },
+  Fern: { moistureRange: [0, 380], temperature: "Normal", waterLevel: "High", pH: "Slightly Acidic" },
+  Orchid: { moistureRange: [0, 380], temperature: "Warm", waterLevel: "Moderate", pH: "Slightly Acidic" },
+  "Spider Plant": { moistureRange: [380, 450], temperature: "Normal", waterLevel: "Moderate", pH: "Neutral" },
+  "Aloe Vera": { moistureRange: [450, Infinity], temperature: "High", waterLevel: "Low", pH: "Neutral" },
 };
 
 const WateringPage = ({ selectedPlant = "Cactus" }) => {
@@ -61,8 +61,8 @@ const WateringPage = ({ selectedPlant = "Cactus" }) => {
         console.log("Your plant has more than enough water.");
         alert("Your plant has more than enough water."); // Display notification
       } else if (moistureValue > desiredMoistureRange[1]) {
-        console.log("Your plant should be watered soon.");
-        alert("Your plant should be watered soon."); // Display notification
+        console.log("Your plant should be watered.");
+        alert("Your plant should be watered."); // Display notification
 
         // Trigger watering by toggling the water pump
         await fetch("http://107.200.171.115:5000/api/control/togglePump", {

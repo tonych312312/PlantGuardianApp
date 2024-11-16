@@ -49,9 +49,9 @@ const SensorPage = () => {
 
   const determineMoistureStatus = (moistureValue) => {
     const moisture = parseInt(moistureValue, 10);
-    if (moisture <= 300) {
+    if (moisture <= 380) {
       return "Wet | ";
-    } else if (moisture > 300 && moisture <= 400) {
+    } else if (moisture > 380 && moisture <= 450) {
       return "Normal | ";
     } else {
       return "Dry | ";

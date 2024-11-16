@@ -14,11 +14,11 @@ const Stack = createStackNavigator();
 
 // Define plant presets globally to match what’s in `SettingsPage`
 const plantPresets = {
-  Cactus: { moistureRange: [400, Infinity] },
-  Fern: { moistureRange: [0, 300] },
-  Orchid: { moistureRange: [0, 300] },
-  "Spider Plant": { moistureRange: [301, 400] },
-  "Aloe Vera": { moistureRange: [400, Infinity] },
+  Cactus: { moistureRange: [450, Infinity] },
+  Fern: { moistureRange: [0, 380] },
+  Orchid: { moistureRange: [0, 380] },
+  "Spider Plant": { moistureRange: [380, 450] },
+  "Aloe Vera": { moistureRange: [450, Infinity] },
 };
 
 const App = () => {
@@ -40,7 +40,7 @@ const App = () => {
       if (moistureValue < desiredMoistureRange[0]) {
         Alert.alert("Notification", "Your plant has more than enough water.");
       } else if (moistureValue > desiredMoistureRange[1]) {
-        Alert.alert("Notification", "Your plant should be watered soon.");
+        Alert.alert("Notification", "Your plant should be watered.");
       } else {
         Alert.alert("Notification", "Your plant is doing well and has enough water.");
       }
@@ -51,7 +51,7 @@ const App = () => {
 
   // Set up the interval for the moisture check every 3 minutes
   useEffect(() => {
-    const intervalId = setInterval(checkMoistureStatus, 3 * 60 * 1000); // 3 minutes 
+    const intervalId = setInterval(checkMoistureStatus, 2 * 60 * 1000); // 2 minutes
 
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
