@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { AppRegistry, Alert } from 'react-native'; // Added AppRegistry
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PlantGuardianApp from './src/components/PlantGuardianApp';
@@ -9,6 +9,7 @@ import WateringPage from './src/components/WateringPage';
 import SettingsPage from './src/components/SettingsPage';
 import NavigationBar from './src/components/NavigationBar';
 import styled from 'styled-components/native';
+import { name as appName } from './app.json'; // Import app name from app.json
 
 const Stack = createStackNavigator();
 
@@ -87,5 +88,8 @@ const AppContainer = styled.View`
 const ContentContainer = styled.View`
   flex: 1;
 `;
+
+// Ensure the app is registered correctly
+AppRegistry.registerComponent(appName, () => App);
 
 export default App;
